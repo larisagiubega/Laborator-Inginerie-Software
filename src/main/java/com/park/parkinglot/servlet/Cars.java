@@ -5,12 +5,8 @@
  */
 package com.park.parkinglot.servlet;
 
-import com.park.parkinglot.common.CarDetails;
-import com.park.parkinglot.ejb.CarBean;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +29,6 @@ public class Cars extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Inject
-    private CarBean carBean;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,12 +58,7 @@ public class Cars extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("activePage", "Cars");
         request.setAttribute("numberOfFreeParkingSpots", 5);
-        
-        List<CarDetails> cars = carBean.getAllCars();
-        request.setAttribute("cars", cars);
-        
         request.getRequestDispatcher("/WEB-INF/pages/cars.jsp").forward(request, response);
     }
 
