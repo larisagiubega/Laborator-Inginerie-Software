@@ -32,6 +32,7 @@
                 Please select an owner.
             </div>
         </div>
+            <input type="hidden" name="car_id" value="${car.id}"/>
         <button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>
 
 

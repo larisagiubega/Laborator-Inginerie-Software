@@ -77,7 +77,7 @@ public class EditCar extends HttpServlet {
         int carId = Integer.parseInt(request.getParameter("id"));
         CarDetails car = carBean.findById(carId);
         request.setAttribute("car", car);
-        
+
         request.getRequestDispatcher("/WEB-INF/pages/editCar.jsp").forward(request, response);
 //        processRequest(request, response);
     }
@@ -93,7 +93,15 @@ public class EditCar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String licensePlate = request.getParameter("license_plate");
+        String parkingSpot = request.getParameter("parking_spot");
+        int ownerId = Integer.parseInt(request.getParameter("owner_id"));
+        int carId = Integer.parseInt(request.getParameter("car_id"));
+
+        carBean.updateCar(carId, licensePlate, parkingSpot, ownerId);
+        
+        response.sendRedirect(request.getContextPath()+"/Cars");
+//        processRequest(request, response);
     }
 
     /**
