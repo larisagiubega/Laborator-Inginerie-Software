@@ -85,4 +85,12 @@ public class CarBean {
         car.setUser(user);
 
     }
+
+    public void deleteCarsByIds(List<Integer> carIds) {
+        LOG.info("deleteCarsByIds");
+        for (Integer id : carIds) {
+            Car car = em.find(Car.class, id);
+            em.remove(car);
+        }
+    }
 }
