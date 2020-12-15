@@ -29,7 +29,7 @@
     </form>
 
     Invoice for
-    <c:forEach var="username" items="${invoces}" varStatus="status">
+    <c:forEach var="username" items="${invoices}" varStatus="status">
         ${username}
     </c:forEach>
 </t:pageTemplate>
