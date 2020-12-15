@@ -6,7 +6,9 @@
 package com.park.parkinglot.ejb;
 
 import com.park.parkinglot.common.CarDetails;
+import com.park.parkinglot.common.PhotoDetails;
 import com.park.parkinglot.entity.Car;
+import com.park.parkinglot.entity.Photo;
 import com.park.parkinglot.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -68,9 +71,9 @@ public class CarBean {
         Car car = em.find(Car.class, carId);
         return new CarDetails(car.getId(), car.getLicensePlate(), car.getParkingSpot(), car.getUser().getUsername());
     }
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
     public void updateCar(int carId, String licensePlate, String parkingSpot, int userId) {
         LOG.info("updateCar");
         Car car = em.find(Car.class, carId);
@@ -92,5 +95,31 @@ public class CarBean {
             Car car = em.find(Car.class, id);
             em.remove(car);
         }
+    }
+
+    public void addPhotoToCar(Integer carId, String filename, String fileType, byte[] fileContent) {
+        LOG.info("addPhotoToCar");
+
+        Photo photo = new Photo();
+        photo.setFilename(filename);
+        photo.setFileType(fileType);
+        photo.setFileContent(fileContent);
+
+        Car car = em.find(Car.class, carId);
+        car.setPhoto(photo);
+
+        photo.setCar(car);
+        em.persist(photo);
+    }
+
+    public PhotoDetails findPhotoByCarId(Integer carId) {
+        TypedQuery<Photo> typedQuery = em.createQuery("select p from photo p where p.car.id = :id", Photo.class).setParameter("id", carId);
+
+        List<Photo> photos = typedQuery.getResultList();
+        if (photos.isEmpty()) {
+            return null;
+        }
+        Photo photo = photos.get(0);
+        return new PhotoDetails(photo.getId(), photo.getFilename(), photo.getFileType(), photo.getFileContent());
     }
 }
